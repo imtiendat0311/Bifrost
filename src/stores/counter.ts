@@ -27,7 +27,9 @@ export const useCart = defineStore('cart', () => {
     cart.value.push(item)
   }
   function removeFromCart(index: number) {
-    cart.value = cart.value.splice(index, 1)
+    cart.value.splice(index, 1)
+    console.log(index)
+    console.log(cart.value)
   }
   function getCart() {
     return cart.value
