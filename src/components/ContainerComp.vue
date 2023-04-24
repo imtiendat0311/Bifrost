@@ -16,7 +16,7 @@
       <p class="">{{ desc }}</p>
       <p class="font-bold">{{ price + ' VND' }}</p>
       <div class="flex gap-5 flex-grow justify-center pt-10 pb-10">
-        <form action="http://localhost:3000/api/checkout" method="POST">
+        <form action="https://stripe-checkout.onrender.com/api/checkout" method="POST">
           <input
             type="hidden"
             name="cart"

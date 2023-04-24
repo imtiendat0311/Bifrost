@@ -68,6 +68,7 @@
           @change="
             (e) => {
               if (e.target != null) {
+                //@ts-ignore
                 file = e.target.files[0]
               }
             }
@@ -246,7 +247,7 @@ async function addItem() {
     file.value !== null
   ) {
     const db = getFirestore()
-
+    //@ts-ignore
     const url = await uploadImg(file.value, 'img/' + file.value.name)
     if (url != null) {
       const newItem = {

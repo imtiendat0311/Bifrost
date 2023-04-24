@@ -84,29 +84,41 @@
 <script setup lang="ts">
 import { getAuth } from 'firebase/auth'
 import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
-import { onBeforeMount, ref } from 'vue'
-const items = ref([])
+import { onBeforeMount, ref, type Ref } from 'vue'
+const items: Ref<any[]> = ref([])
 const db = getFirestore()
+interface dbData {
+  item: Array<{ name: string; quantity: number }>
+  date: string
+  total: number
+  status: string
+  name: string
+  address: {
+    line1: string
+    line2: string
+    city: string
+    state: string
+    postal_code: string
+    country: string
+  }
+  last4: string
+  brand: string
+}
 onBeforeMount(async () => {
   const auth = getAuth()
   const user = auth.currentUser
   const qs = await getDocs(query(collection(db, 'orders'), where('userId', '==', user!.uid)))
-  qs.forEach(
-    (doc) => {
-      items.value.push({
-        item: doc.data().item,
-        date: doc.data().date,
-        total: doc.data().total,
-        status: doc.data().status,
-        name: doc.data().name,
-        address: doc.data().shipping.address,
-        last4: doc.data().last4,
-        brand: doc.data().brand
-      })
-    },
-    (err) => {
-      console.log(err)
-    }
-  )
+  qs.forEach((doc) => {
+    items.value.push({
+      item: doc.data().item,
+      date: doc.data().date,
+      total: doc.data().total,
+      status: doc.data().status,
+      name: doc.data().name,
+      address: doc.data().shipping.address,
+      last4: doc.data().last4,
+      brand: doc.data().brand
+    })
+  })
 })
 </script>
