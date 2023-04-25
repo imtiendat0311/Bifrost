@@ -54,7 +54,7 @@
                 -
               </button>
             </div>
-            <form action="http://localhost:3000/api/checkout" method="POST">
+            <form action="https://stripe-checkout.onrender.com/api/checkout" method="POST">
               <input type="hidden" name="cart" :value="JSON.stringify(cart)" />
               <input type="hidden" name="multiple" :value="true" />
               <input
