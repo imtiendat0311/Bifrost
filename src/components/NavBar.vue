@@ -32,7 +32,7 @@
         </div>
         <div
           tabindex="0"
-          class="dropdown-content card card-compact p-2 shadow bg-white text-black w-80"
+          class="dropdown-content card card-compact p-2 shadow bg-white text-black w-80 dark:bg-black dark:text-white"
         >
           <div class="card-body flex">
             <h3 class="card-title text-black dark:text-white">Your Cart</h3>
@@ -62,7 +62,11 @@
                 name="uid"
                 :value="firebaseUser === null ? null : firebaseUser.uid"
               />
-              <button class="btn bg-black text-white">Checkout</button>
+              <button
+                class="btn bg-black text-white dark:bg-white dark:text-black dark:hover:bg-zinc-800 dark:hover:text-white"
+              >
+                Checkout
+              </button>
             </form>
           </div>
         </div>

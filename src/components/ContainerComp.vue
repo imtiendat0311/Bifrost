@@ -32,12 +32,14 @@
             name="uid"
             :value="firebaseUser === null ? null : firebaseUser.uid"
           />
-          <button class="btn bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800">
+          <button
+            class="btn bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 hover:text-white"
+          >
             Buy Now
           </button>
         </form>
         <button
-          class="btn bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800"
+          class="btn bg-black dark:bg-white text-white dark:text-black hover:bg-zinc-800 hover:text-white"
           @click="addCart({ id, kind, price, src, desc, quantity: 1 })"
         >
           Add To Cart

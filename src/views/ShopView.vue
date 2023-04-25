@@ -1,6 +1,6 @@
 <template>
-  <div class="flex gap-10 grow flex-row justify-center">
-    <div v-for="item in items" :key="item.key">
+  <div class="flex gap-10 grow flex-row justify-center content-stretch">
+    <div v-for="item in items" :key="item.key" class="flex">
       <ContainerComp
         :id="item.key"
         :kind="item.name"
