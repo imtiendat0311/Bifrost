@@ -2,7 +2,7 @@
   <div class="flex flex-col w-full gap-5 pl-10 pr-10">
     <div class="flex flex-col w-full lg:flex-row gap-5">
       <div
-        class="grid flex-grow card rounded-box place-items-center shadow-lg text-black text-bold dark:text-white dark:bg-black"
+        class="grid flex-grow card rounded-box place-items-center shadow-lg text-black text-bold dark:text-white dark:bg-black font-bold"
       >
         {{ firebaseUser == null ? 'not logged in' : 'Hi  ' + name }}
       </div>
@@ -85,7 +85,7 @@
     <div
       class="grid grid-flow-col card rounded-box gap-5 justify-center bg-transparent p-5 auto-cols-max auto-rows-max"
     >
-      <div v-for="item in items" :key="item.key">
+      <div v-for="item in items" :key="item.key" class="flex">
         <div class="card w-96 bg-white dark:bg-black shadow-xl">
           <figure>
             <img :src="item.img" :alt="item.name" />

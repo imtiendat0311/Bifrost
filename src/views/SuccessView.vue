@@ -36,18 +36,18 @@
           <!-- head -->
           <thead>
             <tr>
-              <th>ITEM</th>
-              <th>DESCRIPTION</th>
-              <th>Qty</th>
-              <th>Price</th>
+              <th class="dark:bg-zinc-800 dark:text-white">ITEM</th>
+              <th class="dark:bg-zinc-800 dark:text-white">DESCRIPTION</th>
+              <th class="dark:bg-zinc-800 dark:text-white">Qty</th>
+              <th class="dark:bg-zinc-800 dark:text-white">Price</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(itm, idx) in items" :key="idx" class="hover">
-              <td><img :src="itm.img" class="w-20" /></td>
-              <td>{{ itm.name }}</td>
-              <td>{{ itm.quantity }}</td>
-              <td>{{ itm.price }}</td>
+            <tr v-for="(itm, idx) in items" :key="idx">
+              <td class="dark:text-black dark:bg-white"><img :src="itm.img" class="w-20" /></td>
+              <td class="dark:text-black dark:bg-white">{{ itm.name }}</td>
+              <td class="dark:text-black dark:bg-white">{{ itm.quantity }}</td>
+              <td class="dark:text-black dark:bg-white">{{ itm.price }}</td>
             </tr>
             <!-- row 3 -->
           </tbody>
