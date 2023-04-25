@@ -2,12 +2,12 @@
   <div class="p-10 flex flex-col">
     <div class="flex flex-col w-full lg:flex-row gap-5">
       <div
-        class="grid flex-grow card bg-white text-black rounded-box place-items-center font-bold shadow-lg"
+        class="grid flex-grow card bg-white text-black rounded-box place-items-center font-bold shadow-lg dark:bg-black dark:text-white"
       >
         Hi {{ ' ' + userName }}
       </div>
       <div
-        class="grid flex-grow card bg-white text-black rounded-box place-items-center pt-5 pb-5 gap-5 shadow-lg"
+        class="grid flex-grow card bg-white text-black rounded-box place-items-center pt-5 pb-5 gap-5 shadow-lg dark:bg-black dark:text-white"
       >
         <span class="font-bold">Your Recent Spending</span>
         <BarChart v-bind="barChartProps" />
@@ -111,6 +111,7 @@ const items: Ref<any[]> = ref([])
 const db = getFirestore()
 const chartDataX: Ref<any[]> = ref([])
 const chartDataY: Ref<any[]> = ref([])
+const dark = ref(false)
 interface dbData {
   item: Array<{ name: string; quantity: number }>
   date: string
@@ -136,7 +137,7 @@ const chartData = computed(() => {
       {
         label: 'Total',
         data: chartDataY.value,
-        backgroundColor: ['#000000']
+        backgroundColor: [dark.value ? '#ffffff' : '#000000']
       }
     ]
   }
@@ -150,6 +151,7 @@ onBeforeMount(async () => {
   await getDoc(doc(db, 'users', user!.uid)).then(
     (doc) => (userName.value = doc.data()!.firstName + ' ' + doc.data()!.lastName)
   )
+  dark.value = window.matchMedia('(prefers-color-scheme: dark)').matches
   const qs = await getDocs(query(collection(db, 'orders'), where('userId', '==', user!.uid)))
   qs.forEach((doc) => {
     var temp = doc.data().date

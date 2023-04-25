@@ -5,8 +5,8 @@
       src="https://scontent-ord5-2.xx.fbcdn.net/v/t1.6435-9/130907080_111660134129154_6675992756447715939_n.jpg?_nc_cat=105&ccb=1-7&_nc_sid=8bfeb9&_nc_ohc=-5jUOL_2LwEAX-NCHJY&_nc_ht=scontent-ord5-2.xx&oh=00_AfDHQCGf3sMvKHtfp9sYzztxjYVD1hm3jm0ymuufKmw43Q&oe=645F79E2"
     />
   </div>
-  <div class="flex gap-10 grow flex-row justify-center">
-    <div v-for="item in items" :key="item.key">
+  <div class="flex gap-10 grow flex-row justify-center pb-10">
+    <div v-for="item in items" :key="item.key" class="flex">
       <ContainerComp
         :id="item.key"
         :kind="item.name"
