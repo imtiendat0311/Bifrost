@@ -20,6 +20,8 @@ onBeforeMount(() => {
   document.getElementsByTagName('body')[0].classList.add('dark:bg-zinc-800')
   document.getElementsByTagName('body')[0].classList.add('dark:text-white')
   document.getElementsByTagName('body')[0].classList.add('h-screen')
+  document.getElementById('app')?.classList.add('dark:bg-zinc-800')
+  document.getElementById('app')?.classList.add('dark:text-white')
 
   document.getElementById('__nuxt')?.classList.add('dark:bg-zinc-800')
   if (localStorage.getItem('theme') === 'dark') {

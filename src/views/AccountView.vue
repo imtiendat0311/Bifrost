@@ -31,13 +31,13 @@
           tabindex="0"
           class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box"
         >
-          <div class="collapse-title text-xl font-medium">
+          <div class="collapse-title text-xl font-medium dark:bg-black dark:text-white">
             <div class="flex justify-between">
               <span>{{ 'Date: ' + itm.date }}</span>
               <span>{{ 'Total: ' + itm.total }}</span>
             </div>
           </div>
-          <div class="collapse-content">
+          <div class="collapse-content dark:bg-white dark:text-black">
             <div class="flex w-full mt-5 mb-5 gap-5">
               <div
                 class="grid h-20 flex-grow card bg-black text-white rounded-box place-items-center"
@@ -79,10 +79,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr class="hover" v-for="(it, idex) in itm.item" :key="it.name">
-                    <th>{{ idex + 1 }}</th>
-                    <td>{{ it.name }}</td>
-                    <td>{{ it.quantity }}</td>
+                  <tr class="" v-for="(it, idex) in itm.item" :key="it.name">
+                    <th class="dark:bg-white dark:text-black">
+                      {{ idex + 1 }}
+                    </th>
+                    <td class="dark:bg-white dark:text-black">
+                      {{ it.name }}
+                    </td>
+                    <td class="dark:bg-white dark:text-black">
+                      {{ it.quantity }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
