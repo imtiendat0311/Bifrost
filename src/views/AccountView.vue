@@ -1,9 +1,17 @@
 <template>
   <div class="p-10 flex flex-col">
     <div class="flex flex-col w-full lg:flex-row gap-5">
-      <div class="grid flex-grow card bg-base-300 rounded-box place-items-center">Hi</div>
-      <div class="grid flex-grow card bg-base-300 rounded-box place-items-center pt-5 pb-5 gap-5">
+      <div
+        class="grid flex-grow card bg-white text-black rounded-box place-items-center font-bold shadow-lg"
+      >
+        Hi {{ ' ' + userName }}
+      </div>
+      <div
+        class="grid flex-grow card bg-white text-black rounded-box place-items-center pt-5 pb-5 gap-5 shadow-lg"
+      >
         <span class="font-bold">Your Recent Spending</span>
+        <BarChart v-bind="barChartProps" />
+
         <!-- <div class="card w-96 bg-primary text-primary-content">
           <div class="card-body">
             <h2 class="card-title">Card title!</h2>
@@ -31,7 +39,9 @@
           </div>
           <div class="collapse-content">
             <div class="flex w-full mt-5 mb-5 gap-5">
-              <div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
+              <div
+                class="grid h-20 flex-grow card bg-black text-white rounded-box place-items-center"
+              >
                 <div>
                   {{ itm.name }}
                 </div>
@@ -45,7 +55,9 @@
                   {{ itm.address.country }}
                 </div>
               </div>
-              <div class="grid h-20 flex-grow card bg-base-300 rounded-box place-items-center">
+              <div
+                class="grid h-20 flex-grow card bg-black rounded-box place-items-center text-white"
+              >
                 <div class="font-bold">PAYMENT METHOD</div>
 
                 <div class="flex gap-3">
@@ -61,9 +73,9 @@
                 <!-- head -->
                 <thead>
                   <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Quantity</th>
+                    <th class="bg-black text-white"></th>
+                    <th class="bg-black text-white">Name</th>
+                    <th class="bg-black text-white">Quantity</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -82,11 +94,17 @@
   </div>
 </template>
 <script setup lang="ts">
+import { Chart, registerables } from 'chart.js'
+import { BarChart, useBarChart } from 'vue-chart-3'
+
 import { getAuth } from 'firebase/auth'
-import { collection, getDocs, getFirestore, query, where } from 'firebase/firestore'
-import { onBeforeMount, ref, type Ref } from 'vue'
+import { collection, doc, getDoc, getDocs, getFirestore, query, where } from 'firebase/firestore'
+import { computed, onBeforeMount, ref, type Ref } from 'vue'
+const userName = ref('')
 const items: Ref<any[]> = ref([])
 const db = getFirestore()
+const chartDataX: Ref<any[]> = ref([])
+const chartDataY: Ref<any[]> = ref([])
 interface dbData {
   item: Array<{ name: string; quantity: number }>
   date: string
@@ -104,11 +122,39 @@ interface dbData {
   last4: string
   brand: string
 }
+Chart.register(...registerables)
+const chartData = computed(() => {
+  return {
+    labels: chartDataX.value,
+    datasets: [
+      {
+        label: 'Total',
+        data: chartDataY.value,
+        backgroundColor: ['#000000']
+      }
+    ]
+  }
+})
+const { barChartProps, barChartRef } = useBarChart({
+  chartData
+})
 onBeforeMount(async () => {
   const auth = getAuth()
   const user = auth.currentUser
+  await getDoc(doc(db, 'users', user!.uid)).then(
+    (doc) => (userName.value = doc.data()!.firstName + ' ' + doc.data()!.lastName)
+  )
   const qs = await getDocs(query(collection(db, 'orders'), where('userId', '==', user!.uid)))
   qs.forEach((doc) => {
+    var temp = doc.data().date
+    var notTemp = temp.split(' ')
+    var notdate = notTemp[1] + notTemp[3]
+    if (chartDataX.value.includes(notdate)) {
+      chartDataY.value[chartDataX.value.indexOf(notdate)] += doc.data().total
+    } else {
+      chartDataX.value.push(notdate)
+      chartDataY.value.push(doc.data().total)
+    }
     items.value.push({
       item: doc.data().item,
       date: doc.data().date,

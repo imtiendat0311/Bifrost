@@ -57,21 +57,27 @@
   </div>
 </template>
 <script setup lang="ts">
-import { getAuth } from 'firebase/auth'
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import {
   collection,
   doc,
   getDoc,
   getDocs,
   getFirestore,
+  onSnapshot,
   query,
   setDoc,
   updateDoc,
   where
 } from 'firebase/firestore'
-import { type Ref, ref, onBeforeMount } from 'vue'
+import { type Ref, ref, onMounted, watch, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useFirebaseUser } from '@/stores/counter'
+import { storeToRefs } from 'pinia'
 
+const store = useFirebaseUser()
+
+const { firebaseUser } = storeToRefs(store)
 const route = useRoute()
 const data: Ref<any> = ref({
   date: '',
@@ -94,12 +100,11 @@ const data: Ref<any> = ref({
   }
 })
 const items: Ref<any[]> = ref([])
-
 const db = getFirestore()
 console.log(route.query.session_id)
-onBeforeMount(async () => {
-  const docSnap = await getDoc(doc(db, 'orders', route.query.session_id!.toString()))
-  if (docSnap.exists()) {
+var unsub: any
+onMounted(async () => {
+  unsub = onSnapshot(doc(db, 'orders', route.query.session_id!.toString()), (docSnap: any) => {
     data.value = docSnap.data()
     data.value.item.forEach(async (element: any) => {
       const qs = await getDocs(query(collection(db, 'items'), where('name', '==', element.name)))
@@ -117,14 +122,22 @@ onBeforeMount(async () => {
         })
       })
     })
-  } else {
-    console.log('no data')
+  })
+  if (firebaseUser.value != null) {
+    console.log(firebaseUser.value?.uid)
   }
-  console.log(items.value)
-  if (getAuth().currentUser != null) {
+})
+
+getAuth().onAuthStateChanged(async (user) => {
+  if (user) {
+    console.log('here')
     await updateDoc(doc(db, 'orders', route.query.session_id!.toString()), {
-      userId: getAuth().currentUser!.uid
+      userId: user!.uid
     })
   }
+})
+
+onUnmounted(() => {
+  unsub()
 })
 </script>
